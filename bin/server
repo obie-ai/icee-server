@@ -44,7 +44,7 @@ const server = CreateServer({
     domain: argv.domain,
 });
 
-server.listen(argv.port, argv.address, () => {
+server.listen(argv.port || 80, argv.address, () => {
     debug('server listening on port: %d', server.address().port);
 });
 
