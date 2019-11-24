@@ -15,7 +15,6 @@ export default function(opt) {
 
     const validHosts = (opt.domain) ? [opt.domain] : undefined;
     const myTldjs = tldjs.fromUserSettings({ validHosts });
-    const landingPage = opt.landing || 'https://localtunnel.github.io/www/';
 
     function GetClientIdFromHostname(hostname) {
         return myTldjs.getSubdomain(hostname);
@@ -27,6 +26,7 @@ export default function(opt) {
 
     const app = new Koa();
     const router = new Router();
+    app.use(require('koa-static')(__dirname + '/public'));
 
     router.get('/api/status', async (ctx, next) => {
         const stats = manager.stats;
@@ -76,7 +76,7 @@ export default function(opt) {
         }
 
         // no new client request, send to landing page
-        ctx.redirect(landingPage);
+        ctx.response.sendFile(__dirname + '/index.html');
     });
 
     // anything after the / path is a request for a specific client name
